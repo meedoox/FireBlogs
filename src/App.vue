@@ -59,4 +59,18 @@ export default {
 .link-light {
   color: #fff;
 }
+
+.arrow {
+  margin-left: 8px;
+  width: 12px;
+  path {
+    fill: #000;
+  }
+}
+
+.arrow-light {
+  path {
+    fill: #fff;
+  }
+}
 </style>

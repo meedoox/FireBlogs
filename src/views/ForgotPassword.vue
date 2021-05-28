@@ -26,6 +26,11 @@ export default {
   components: {
     email,
   },
+  data() {
+      return {
+          email: null,
+      }
+  }
 };
 </script>
 
@@ -38,6 +43,7 @@ export default {
                 margin-bottom: 8px;
             }
             p {
+                text-align: center;
                 margin-bottom: 32px;
             }
         }

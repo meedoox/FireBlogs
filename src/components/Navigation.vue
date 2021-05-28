@@ -11,11 +11,16 @@
           <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
           <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
           <router-link class="link" to="#">Create Post</router-link>
-          <router-link class="link" :to="{ name: 'Login' }"
-            >Login/Register</router-link
-          >
+          <router-link v-if="!user" class="link" :to="{ name: 'Login' }">
+            Login/Register
+          </router-link>
         </ul>
-        <div v-if="user" @click="toggleProfileMenu" class="profile" ref="profile">
+        <div
+          v-if="user"
+          @click="toggleProfileMenu"
+          class="profile"
+          ref="profile"
+        >
           <span>{{ this.$store.state.profileInitials }}</span>
           <div v-show="profileMenu" class="profile-menu">
             <div class="info">
@@ -43,8 +48,8 @@
                 </router-link>
               </div>
               <div @click="signOut" class="option">
-                  <signOutIcon class="icon" />
-                  <p>Sign Out</p>
+                <signOutIcon class="icon" />
+                <p>Sign Out</p>
               </div>
             </div>
           </div>
@@ -57,7 +62,7 @@
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
         <router-link class="link" to="#">Create Post</router-link>
-        <router-link class="link" :to="{ name: 'Login' }"
+        <router-link v-if="!user" class="link" :to="{ name: 'Login' }"
           >Login/Register</router-link
         >
       </ul>
@@ -70,8 +75,8 @@ import menuIcon from '../assets/Icons/bars-regular.svg';
 import userIcon from '../assets/Icons/user-alt-light.svg';
 import adminIcon from '../assets/Icons/user-crown-light.svg';
 import signOutIcon from '../assets/Icons/sign-out-alt-regular.svg';
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export default {
   name: 'navigation',
@@ -114,13 +119,13 @@ export default {
     signOut() {
       firebase.auth().signOut();
       window.location.reload();
-    }
+    },
   },
-  computed: { 
+  computed: {
     user() {
       return this.$store.state.user;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -202,64 +207,64 @@ header {
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-            .info {
+          .info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #fff;
+
+            .initials {
+              position: initial;
+              width: 40px;
+              height: 40px;
+              background-color: #fff;
+              color: #303030;
               display: flex;
               align-items: center;
-              padding: 15px;
-              border-bottom: 1px solid #fff;
-
-              .initials {
-                position: initial;
-                width: 40px;
-                height: 40px;
-                background-color: #fff;
-                color: #303030;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-              }
-
-              .right {
-                flex: 1;
-                margin-left: 24px;
-
-                p:nth-child(1) {
-                  font-size: 14px;
-                }
-
-                p:nth-child(2),
-                p:nth-child(3) {
-                  font-size: 12px;
-                }
-              }
+              justify-content: center;
+              border-radius: 50%;
             }
 
-            .options {
-              padding: 15px;
+            .right {
+              flex: 1;
+              margin-left: 24px;
 
-              .option {
-                text-decoration: none;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                margin-bottom: 12px;
+              p:nth-child(1) {
+                font-size: 14px;
+              }
 
-                .icon {
-                  width: 18px;
-                  height: auto;
-                }
+              p:nth-child(2),
+              p:nth-child(3) {
+                font-size: 12px;
+              }
+            }
+          }
 
-                p {
-                  font-size: 14px;
-                  margin-left: 12px;
-                }
+          .options {
+            padding: 15px;
 
-                &:last-child {
+            .option {
+              text-decoration: none;
+              color: #fff;
+              display: flex;
+              align-items: center;
+              margin-bottom: 12px;
+
+              .icon {
+                width: 18px;
+                height: auto;
+              }
+
+              p {
+                font-size: 14px;
+                margin-left: 12px;
+              }
+
+              &:last-child {
                 margin-bottom: 0px;
               }
-              }
             }
+          }
         }
       }
     }

@@ -11,7 +11,6 @@ Vue.use(Vue2Editor);
 Vue.config.productionTip = false;
 
 let app;
-//es-lint-disable-next-line no-unused-vars
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
     new Vue({

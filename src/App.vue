@@ -27,7 +27,6 @@ export default {
   },
   created() {
     this.checkRoute();
-
   },
   mounted() {},
   methods: {

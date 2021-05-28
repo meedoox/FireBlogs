@@ -11,6 +11,8 @@
 <script>
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export default {
   name: 'app',
@@ -25,6 +27,7 @@ export default {
   },
   created() {
     this.checkRoute();
+
   },
   mounted() {},
   methods: {

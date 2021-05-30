@@ -29,7 +29,7 @@
           <label for="email">Email:</label>
           <input disabled type="text" if="email" v-model="email" />
         </div>
-        <button @click.prevent="updateProfile">Save Changes</button>
+        <button @click="updateProfile">Save Changes</button>
       </div>
     </div>
   </div>

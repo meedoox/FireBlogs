@@ -3,12 +3,13 @@ import 'firebase/firestore';
 
 // Firebase configuration
 var firebaseConfig = {
-  apiKey: 'AIzaSyB87zGzp68HDfk-iEQRHbu2rO04vJRjxq4',
-  authDomain: 'fireblogs-c44b5.firebaseapp.com',
-  projectId: 'fireblogs-c44b5',
-  storageBucket: 'fireblogs-c44b5.appspot.com',
-  messagingSenderId: '1092882589',
-  appId: '1:1092882589:web:c3d1c4f2ef16e00bb38474',
+  apiKey: "AIzaSyCfCb865RtDJjjQct2mB8WmFUMfZgXf92Q",
+  authDomain: "fireblogs-d5b62.firebaseapp.com",
+  projectId: "fireblogs-d5b62",
+  storageBucket: "fireblogs-d5b62.appspot.com",
+  messagingSenderId: "198909423048",
+  appId: "1:198909423048:web:8db0d1c3e46461ec1de4fd",
+  measurementId: "G-EJLP0C6MWH"
 };
 
 // Initialize Firebase

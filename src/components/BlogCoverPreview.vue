@@ -14,11 +14,13 @@ export default {
     close,
   },
   methods: {
-    closePreview() {},
+    closePreview() {
+        this.$store.commit('openPhotoPreview');
+    },
   },
   computed: {
     blogCoverPhoto() {
-      return this.$store.state.blogPhotoFileURL;
+      return this.$store.state.blogPhotoFileUrl;
     },
   },
 };
@@ -62,6 +64,7 @@ export default {
       margin-top: 16px;
       display: block;
       width: auto;
+      max-width: 100%;
       height: 100%;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }

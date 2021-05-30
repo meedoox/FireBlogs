@@ -1,6 +1,7 @@
 <template>
   <div class="create-post">
     <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
+    <Loading v-show="loading"/>
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error: </span>{{ this.errorMsg }}</p>
@@ -35,7 +36,7 @@
         />
       </div>
       <div class="blog-actions">
-        <button>Publish Blog</button>
+        <button @click="uploadBlog">Publish Blog</button>
         <router-link :to="{ name: 'BlogPreview' }" class="router-button"
           >Post Preview</router-link
         >
@@ -46,9 +47,11 @@
 
 <script>
 import BlogCoverPreview from '../components/BlogCoverPreview';
+import Loading from '../components/Loading';
 
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import db from '../firebase/firebaseInit';
 
 import Quill from 'quill';
 window.Quill = Quill;
@@ -59,12 +62,14 @@ export default {
   name: 'CreatePost',
   components: {
     BlogCoverPreview,
+    Loading,
   },
   data() {
     return {
       file: null,
       error: null,
       errorMsg: null,
+      loading: null,
       editorSettings: {
         modules: {
           imageResize: {},
@@ -101,6 +106,56 @@ export default {
           resetUploader();
         }
       );
+    },
+
+    uploadBlog() {
+      this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled!';
+      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
+        if (this.file) {
+            this.loading = true;
+          const storageRef = firebase.storage().ref();
+          const docRef = storageRef.child(
+            `documents/blogCoverPhotos/${this.$store.state.blogPhotoName}`
+          );
+          docRef.put(this.file).on(
+            'state_changed',
+            (snapshot) => {
+              console.log(snapshot);
+            },
+            (error) => {
+              console.log(error);
+              this.loading = false;
+            },
+            async () => {
+              const downloadURL = await docRef.getDownloadURL();
+              const timestamp = await Date.now();
+              const database = await db.collection('blogPosts').doc();
+
+              await database.set({
+                blogId: database.id,
+                blogHTML: this.blogHTML,
+                blogCoverPhoto: downloadURL,
+                blogCoverPhotoName: this.blogCoverPhotoName,
+                blogTitle: this.blogTitle,
+                profileId: this.profileId,
+                date: timestamp,
+              });
+
+              this.loading = false;
+
+              this.$router.push({ name: 'ViewBlog' });
+            }
+          );
+          return;
+        }
+        this.errorMsg = 'Please ensure you uploaded a cover photo!';
+      }
+
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+      return;
     },
   },
   computed: {

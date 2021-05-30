@@ -9,6 +9,7 @@ import Profile from '../views/Profile.vue';
 import Admin from '../views/Admin.vue';
 import CreatePost from '../views/CreatePost.vue';
 import BlogPreview from '../views/BlogPreview.vue';
+import ViewBlog from '../views/ViewBlog.vue';
 
 Vue.use(VueRouter);
 
@@ -85,6 +86,14 @@ const routes = [
       title: 'Preview Blog Post',
     },
   },
+  {
+    path: '/view-blog',
+    name: 'ViewBlog',
+    component: ViewBlog,
+    meta: {
+      title: 'View Blog Post',
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -94,7 +103,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  document.title = `${to.meta.title} | FireBlogs`
+  document.title = `${to.meta.title} | FireBlogs`;
   next();
 });
 

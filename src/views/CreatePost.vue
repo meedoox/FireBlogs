@@ -9,13 +9,14 @@
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
           <input
+            @change="fileChange"
             type="file"
             ref="blogPhoto"
             id="blog-photo"
             accept=".png, .jpg, .jpeg"
           />
           <button
-            :class="{ 'button-inactive': this.$store.state.blogPhotoFileUrl }"
+            :class="{ 'button-inactive': !this.$store.state.blogPhotoFileUrl }"
             class="preview"
           >
             Preview Photo
@@ -48,6 +49,7 @@ export default {
   name: 'CreatePost',
   data() {
     return {
+      file: null,
       error: null,
       errorMsg: null,
       editorSettings: {
@@ -56,6 +58,14 @@ export default {
         },
       },
     };
+  },
+  methods: {
+    fileChange() {
+        this.file = this.$refs.blogPhoto.files[0];
+        const fileName = this.file.name;
+        this.$store.commit("fileNameChange", fileName);
+        this.$store.commit("createFileURL", URL.createObjectURL(this.file));
+    },
   },
   computed: {
     profileId() {
@@ -155,7 +165,7 @@ export default {
     }
 
     input {
-      transition: 0.5s ease-out all;
+      transition: 0.5s ease-in-out all;
       padding: 10px 4px;
       border: none;
       border-bottom: 1px solid #303030;
@@ -181,6 +191,10 @@ export default {
         text-transform: initial;
       }
 
+      .button-inactive {
+          background-color: #888888;
+      }
+
       span {
         font-size: 12px;
         margin-left: 16px;
@@ -204,7 +218,7 @@ export default {
     .ql-container {
       display: flex;
       flex-direction: column;
-      height: 90%;
+      height: 100%;
       overflow: scroll;
     }
 

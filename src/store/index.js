@@ -30,11 +30,11 @@ export default new Vuex.Store({
         blogDate: 'May 1, 2021',
       },
     ],
-    blogHTML: "Write your blog title here ...",
-    blogTitle: '', 
-    blogPhotoName: '',
-    blogPhotoFileUrl: '',
-    blogPhotoPreview: '',
+    blogHTML: 'Write your blog title here ...',
+    blogTitle: '',
+    blogPhotoName: null,
+    blogPhotoFileUrl: null,
+    blogPhotoPreview: null,
     editPost: null,
     user: null,
     profileAdmin: null,
@@ -51,6 +51,12 @@ export default new Vuex.Store({
     },
     updateBlogTitle(state, payload) {
       state.blogTitle = payload;
+    },
+    fileNameChange(state, payload) {
+      state.blogPhotoName = payload;
+    },
+    createFileURL(state, payload) {
+      state.blogPhotoFileUrl = payload;
     },
     toggleEditPost(state, payload) {
       state.editPost = payload;

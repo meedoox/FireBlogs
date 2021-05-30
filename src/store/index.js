@@ -30,6 +30,8 @@ export default new Vuex.Store({
         blogDate: 'May 1, 2021',
       },
     ],
+    blogPosts: [],
+    postLoaded: null,
     blogHTML: 'Write your blog title here ...',
     blogTitle: '',
     blogPhotoName: null,
@@ -44,6 +46,14 @@ export default new Vuex.Store({
     profileUsername: null,
     profileId: null,
     profileInitials: null,
+  },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+    blogPostsCards(state) {
+      return state.blogPosts.slice(2, 6);
+    }
   },
   mutations: {
     newBlogPost(state, payload) {
@@ -106,6 +116,32 @@ export default new Vuex.Store({
 
       commit('setProfileAdmin', admin);
     },
+
+    async getPost({ state }) {
+      console.log("1")
+      const database = await db.collection("blogPosts").orderBy("date", "desc");
+      console.log("2")
+      const dbResults = await database.get();
+      console.log("3")
+      dbResults.forEach(doc => {
+        if (!state.blogPosts.some(post => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+          }
+
+          state.blogPosts.push(data);
+        }
+      })
+
+      console.log("4")
+
+      state.postLoaded = true;
+    },
+
     async updateUserSettings({ commit, state }) {
       const dataBase = await db.collection('users').doc(state.profileId);
       await dataBase.update({

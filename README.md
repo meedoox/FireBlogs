@@ -1,4 +1,6 @@
-# fireblogs
+# FireBlogs
+
+Web runs on [URL: https://fireblogs-d5b62.web.app/](https://fireblogs-d5b62.web.app/ "Production app")
 
 ## Project setup
 ```

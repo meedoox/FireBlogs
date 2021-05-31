@@ -36,9 +36,9 @@
         />
       </div>
       <div class="blog-actions">
-        <button @click="uploadBlog">Publish Blog</button>
+        <button @click="updateBlog">Save Changes</button>
         <router-link :to="{ name: 'BlogPreview' }" class="router-button"
-          >Post Preview</router-link
+          >Preview Changes</router-link
         >
       </div>
     </div>
@@ -84,7 +84,7 @@ export default {
     this.currentBlog = await this.$store.state.blogPosts.filter((post) => {
       return post.blogID === this.routeID;
     });
-    this.$store.commit("setBlogState", this.currentBlog[0]);
+    this.$store.commit('setBlogState', this.currentBlog[0]);
   },
   methods: {
     fileChange() {
@@ -117,7 +117,8 @@ export default {
       );
     },
 
-    uploadBlog() {
+    async updateBlog() {
+      const database = await db.collection('blogPosts').doc(this.routeID);
       this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled!';
       if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
         if (this.file) {
@@ -137,20 +138,15 @@ export default {
             },
             async () => {
               const downloadURL = await docRef.getDownloadURL();
-              const timestamp = await Date.now();
-              const database = await db.collection('blogPosts').doc();
 
-              await database.set({
-                blogId: database.id,
+              await database.update({
                 blogHTML: this.blogHTML,
                 blogCoverPhoto: downloadURL,
                 blogCoverPhotoName: this.blogCoverPhotoName,
                 blogTitle: this.blogTitle,
-                profileId: this.profileId,
-                date: timestamp,
               });
 
-              await this.$store.dispatch('getPost');
+              await this.$store.dispatch('updatePost', this.routeID);
 
               this.loading = false;
               this.$router.push({
@@ -161,7 +157,16 @@ export default {
           );
           return;
         }
-        this.errorMsg = 'Please ensure you uploaded a cover photo!';
+        this.loading = true;
+        await database.update({
+          blogHTML: this.blogHTML,
+          blogTitle: this.blogTitle,
+        });
+
+        await this.$store.dispatch('updatePost', this.routeID);
+        this.loading = false;
+        this.$router.push({ name: 'ViewBlog', params: { blogid: database.id } });
+        return;
       }
 
       this.error = true;

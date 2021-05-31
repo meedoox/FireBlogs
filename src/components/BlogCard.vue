@@ -4,7 +4,7 @@
       <div class="icon">
         <Edit class="edit" />
       </div>
-      <div class="icon">
+      <div @click="deletePost" class="icon">
         <Delete class="delete" />
       </div>
     </div>
@@ -35,6 +35,11 @@ export default {
   name: 'blogCard',
   props: ['post'],
   components: { Arrow, Edit, Delete },
+  methods: { 
+    deletePost() {
+      this.$store.dispatch("deletePost", this.post.blogID);
+    }
+  },
   computed: {
     editPost() {
       return this.$store.state.editPost;

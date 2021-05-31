@@ -8,28 +8,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    sampleBlogCards: [
-      {
-        blogTitle: 'Blog Card #1',
-        blogCoverPhoto: 'stock-1',
-        blogDate: 'May 1, 2021',
-      },
-      {
-        blogTitle: 'Blog Card #2',
-        blogCoverPhoto: 'stock-2',
-        blogDate: 'May 1, 2021',
-      },
-      {
-        blogTitle: 'Blog Card #3',
-        blogCoverPhoto: 'stock-3',
-        blogDate: 'May 1, 2021',
-      },
-      {
-        blogTitle: 'Blog Card #4',
-        blogCoverPhoto: 'stock-4',
-        blogDate: 'May 1, 2021',
-      },
-    ],
     blogPosts: [],
     postLoaded: null,
     blogHTML: 'Write your blog title here ...',
@@ -53,7 +31,7 @@ export default new Vuex.Store({
     },
     blogPostsCards(state) {
       return state.blogPosts.slice(2, 6);
-    }
+    },
   },
   mutations: {
     newBlogPost(state, payload) {
@@ -74,6 +52,13 @@ export default new Vuex.Store({
     toggleEditPost(state, payload) {
       state.editPost = payload;
     },
+
+    filterBlogPost(state, payload) {
+      state.blogPosts = state.blogPosts.filter(
+        (post) => post.blogID !== payload
+      );
+    },
+
     updateUser(state, payload) {
       state.user = payload;
     },
@@ -118,23 +103,30 @@ export default new Vuex.Store({
     },
 
     async getPost({ state }) {
-      const database = await db.collection("blogPosts").orderBy("date", "desc");
+      const database = await db.collection('blogPosts').orderBy('date', 'desc');
       const dbResults = await database.get();
-      dbResults.forEach(doc => {
-        if (!state.blogPosts.some(post => post.blogID === doc.id)) {
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
           const data = {
             blogID: doc.data().blogId,
             blogHTML: doc.data().blogHTML,
             blogCoverPhoto: doc.data().blogCoverPhoto,
             blogTitle: doc.data().blogTitle,
             blogDate: doc.data().date,
-          }
+          };
 
           state.blogPosts.push(data);
         }
-      })
+      });
 
       state.postLoaded = true;
+    },
+
+    async deletePost({ commit }, payload) {
+      const getPost = await db.collection('blogPosts').doc(payload);
+      await getPost.delete();
+
+      commit('filterBlogPost', payload);
     },
 
     async updateUserSettings({ commit, state }) {

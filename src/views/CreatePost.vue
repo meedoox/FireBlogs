@@ -1,7 +1,7 @@
 <template>
   <div class="create-post">
     <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
-    <Loading v-show="loading"/>
+    <Loading v-show="loading" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error: </span>{{ this.errorMsg }}</p>
@@ -112,7 +112,7 @@ export default {
       this.errorMsg = 'Please ensure Blog Title & Blog Post has been filled!';
       if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
         if (this.file) {
-            this.loading = true;
+          this.loading = true;
           const storageRef = firebase.storage().ref();
           const docRef = storageRef.child(
             `documents/blogCoverPhotos/${this.$store.state.blogPhotoName}`
@@ -141,9 +141,13 @@ export default {
                 date: timestamp,
               });
 
-              this.loading = false;
+              await this.$store.dispatch('getPost');
 
-              this.$router.push({ name: 'ViewBlog' });
+              this.loading = false;
+              this.$router.push({
+                name: 'ViewBlog',
+                params: { blogid: database.id },
+              });
             }
           );
           return;

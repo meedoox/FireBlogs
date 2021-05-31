@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper" :class="{'no-user' : !user}">
+  <div class="blog-wrapper" :class="{ 'no-user': !user }">
     <div class="blog-content">
       <div>
         <h2 v-if="post.welcomeScreen">{{ post.title }}</h2>
@@ -9,7 +9,11 @@
         <router-link v-if="post.welcomeScreen" to="#" class="link link-light">
           Login/Register<Arrow class="arrow arrow-light" />
         </router-link>
-        <router-link v-else to="#" class="link">
+        <router-link
+          v-else
+          :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }"
+          class="link"
+        >
           View The Post<Arrow class="arrow" />
         </router-link>
       </div>
@@ -20,11 +24,7 @@
         :src="require(`../assets/blogPhotos/${post.photo}.jpg`)"
         alt=""
       />
-      <img
-        v-else
-        :src="post.blogCoverPhoto"
-        alt=""
-      />
+      <img v-else :src="post.blogCoverPhoto" alt="" />
     </div>
   </div>
 </template>
@@ -39,8 +39,8 @@ export default {
   computed: {
     user() {
       return this.$store.state.user;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -48,7 +48,8 @@ export default {
 .blog-wrapper {
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   @media (min-width: 700px) {
     min-height: 650px;
     max-height: 650px;
@@ -116,7 +117,8 @@ export default {
   .blog-photo {
     order: 1;
     flex: 3;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
     @media (min-width: 700px) {
       order: 2;
     }

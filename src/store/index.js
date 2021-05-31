@@ -118,15 +118,12 @@ export default new Vuex.Store({
     },
 
     async getPost({ state }) {
-      console.log("1")
       const database = await db.collection("blogPosts").orderBy("date", "desc");
-      console.log("2")
       const dbResults = await database.get();
-      console.log("3")
       dbResults.forEach(doc => {
         if (!state.blogPosts.some(post => post.blogID === doc.id)) {
           const data = {
-            blogID: doc.data().blogID,
+            blogID: doc.data().blogId,
             blogHTML: doc.data().blogHTML,
             blogCoverPhoto: doc.data().blogCoverPhoto,
             blogTitle: doc.data().blogTitle,
@@ -136,8 +133,6 @@ export default new Vuex.Store({
           state.blogPosts.push(data);
         }
       })
-
-      console.log("4")
 
       state.postLoaded = true;
     },

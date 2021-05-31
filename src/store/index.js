@@ -53,6 +53,13 @@ export default new Vuex.Store({
       state.editPost = payload;
     },
 
+    setBlogState(state, payload) {
+      state.blogTitle = payload.blogTitle;
+      state.blogHTML = payload.blogHTML;
+      state.blogPhotoFileUrl = payload.blogCoverPhoto;
+      state.blogPhotoName = payload.blogCoverPhotoName;
+    },
+
     filterBlogPost(state, payload) {
       state.blogPosts = state.blogPosts.filter(
         (post) => post.blogID !== payload
@@ -111,6 +118,7 @@ export default new Vuex.Store({
             blogID: doc.data().blogId,
             blogHTML: doc.data().blogHTML,
             blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
             blogTitle: doc.data().blogTitle,
             blogDate: doc.data().date,
           };

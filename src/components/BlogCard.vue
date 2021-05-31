@@ -40,6 +40,9 @@ export default {
       return this.$store.state.editPost;
     },
   },
+  created() {
+    console.log(this.post);
+  }
 };
 </script>
 

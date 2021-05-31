@@ -22,7 +22,7 @@ export default {
   components: { BlogCard },
   computed: {
     sampleBlogCards() {
-      return this.$store.state.sampleBlogCards;
+      return this.$store.state.blogPosts;
     },
     editPost: {
         get() {
